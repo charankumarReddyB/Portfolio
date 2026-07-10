@@ -33,6 +33,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     body.classList.toggle('dark', theme === 'dark');
     root.style.colorScheme = theme;
     root.setAttribute('data-theme', theme);
+    body.style.transition = 'background-color 0.35s ease, color 0.35s ease';
     body.style.backgroundColor = theme === 'dark' ? '#020617' : '#f8fafc';
     body.style.color = theme === 'dark' ? '#f8fafc' : '#0f172a';
     window.localStorage.setItem('theme', theme);

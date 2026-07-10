@@ -13,9 +13,20 @@
 
   body {
     @apply min-h-screen font-sans antialiased;
-    @apply bg-slate-50 text-slate-900 transition-colors duration-300;
-    @apply dark:bg-dark-950 dark:text-slate-100;
+    @apply bg-[linear-gradient(135deg,_#f8fafc_0%,_#f1f5f9_100%)] text-slate-900 transition-colors duration-300;
+    @apply dark:bg-[linear-gradient(135deg,_#020617_0%,_#111827_100%)] dark:text-slate-100;
     overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 30%),
+      radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.08), transparent 30%);
+    z-index: -1;
   }
 
   ::selection {
@@ -35,13 +46,12 @@ html.dark {
   color-scheme: dark;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-200 dark:bg-dark-900;
+  @apply bg-slate-200 dark:bg-slate-900;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -52,9 +62,8 @@ html.dark {
   @apply from-primary-400 to-accent-cyan;
 }
 
-/* Gradient text */
 .gradient-text {
-  @apply bg-gradient-to-r from-primary-400 via-accent-purple to-accent-cyan bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-primary-500 via-accent-purple to-accent-cyan bg-clip-text text-transparent;
   background-size: 200% auto;
   animation: gradient 3s ease infinite;
 }
@@ -66,14 +75,8 @@ html.dark {
 }
 
 .glass-panel {
-  @apply rounded-3xl border border-slate-200/70 bg-white/70 backdrop-blur-xl shadow-[0_20px_60px_-20px_rgba(15,23,42,0.25)];
-  @apply dark:border-dark-700/50 dark:bg-dark-900/70 dark:shadow-[0_20px_60px_-20px_rgba(2,6,23,0.65)];
-}
-
-.glow-effect {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.25),
-              0 0 40px rgba(139, 92, 246, 0.18),
-              0 0 60px rgba(6, 182, 212, 0.1);
+  @apply rounded-[1.75rem] border border-slate-200/80 bg-white/70 backdrop-blur-2xl shadow-[0_20px_60px_-24px_rgba(15,23,42,0.2)];
+  @apply dark:border-dark-700/50 dark:bg-dark-900/70 dark:shadow-[0_20px_60px_-24px_rgba(2,6,23,0.65)];
 }
 
 .btn-glow {

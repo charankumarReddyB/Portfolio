@@ -64,15 +64,6 @@ export function Navbar() {
                 {link.name}
               </motion.a>
             ))}
-            <motion.a
-              href="https://charankumarreddy.netlify.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-primary-500/30 bg-primary-500/10 px-3.5 py-2 text-sm font-semibold text-primary-600 transition-all hover:bg-primary-500/20 dark:text-primary-300"
-              whileHover={{ scale: 1.04 }}
-            >
-              Portfolio
-            </motion.a>
           </div>
 
           <div className="flex items-center gap-3">
@@ -122,15 +113,6 @@ export function Navbar() {
                   {link.name}
                 </motion.a>
               ))}
-              <motion.a
-                href="https://charankumarreddy.netlify.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                className="block rounded-xl border border-primary-500/30 bg-primary-500/10 px-4 py-2.5 font-semibold text-primary-600 dark:text-primary-300"
-              >
-                Portfolio
-              </motion.a>
             </div>
           </motion.div>
         )}
