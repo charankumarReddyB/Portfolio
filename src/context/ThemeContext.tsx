@@ -9,34 +9,37 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('dark');
+function getPreferredTheme(): Theme {
+  if (typeof window === 'undefined') {
+    return 'dark';
+  }
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-  }, []);
+  const savedTheme = window.localStorage.getItem('theme');
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    return savedTheme;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(() => getPreferredTheme());
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-      document.body.classList.add('dark');
-      document.body.style.backgroundColor = '#020617';
-      document.body.style.color = '#f1f5f9';
-    } else {
-      root.classList.remove('dark');
-      document.body.classList.remove('dark');
-      document.body.style.backgroundColor = '#f8fafc';
-      document.body.style.color = '#0f172a';
-    }
-    localStorage.setItem('theme', theme);
+    const body = document.body;
+
+    root.classList.toggle('dark', theme === 'dark');
+    body.classList.toggle('dark', theme === 'dark');
+    root.style.colorScheme = theme;
+    root.setAttribute('data-theme', theme);
+    body.style.backgroundColor = theme === 'dark' ? '#020617' : '#f8fafc';
+    body.style.color = theme === 'dark' ? '#f8fafc' : '#0f172a';
+    window.localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   return (

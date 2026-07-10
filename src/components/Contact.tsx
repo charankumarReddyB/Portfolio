@@ -3,6 +3,8 @@ import { useInView } from 'framer-motion';
 import { useRef, useState, FormEvent } from 'react';
 import { Mail, Phone, Send, Github, Linkedin, MessageSquare, CheckCircle, AlertCircle } from 'lucide-react';
 
+const emailJsInstructions = 'Replace these values with your EmailJS credentials to enable direct delivery.';
+
 export function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -13,16 +15,52 @@ export function Contact() {
     subject: '',
     message: '',
   });
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const validateForm = () => {
+    if (!formData.name.trim()) return 'Please enter your name.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
+    if (!formData.subject.trim()) return 'Please enter a subject.';
+    if (!formData.message.trim() || formData.message.trim().length < 10) return 'Please share a bit more detail in your message.';
+    return '';
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    const validationError = validateForm();
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      setFormStatus('error');
+      return;
+    }
+
+    setErrorMessage('');
     setFormStatus('sending');
 
-    setTimeout(() => {
-      setFormStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setFormStatus('idle'), 3000);
-    }, 1500);
+    try {
+      const response = await fetch('https://formspree.io/f/xdkjnoev', {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+
+      if (response.ok) {
+        setFormStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        window.setTimeout(() => setFormStatus('idle'), 4000);
+      } else {
+        throw new Error('Unable to send message right now.');
+      }
+    } catch {
+      setFormStatus('error');
+      setErrorMessage('Your message could not be sent. Please email me directly at charankumarreddybantrothula@gmail.com.');
+    }
   };
 
   const contactInfo = [
@@ -57,30 +95,30 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" className="relative py-20 lg:py-32 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500/20 to-transparent" />
+    <section id="contact" className="relative overflow-hidden py-20 lg:py-32">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-primary-500/20 to-transparent" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <span className="inline-block px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-400 text-sm font-medium mb-4">
+          <span className="mb-4 inline-block rounded-full border border-primary-500/30 bg-primary-500/10 px-4 py-2 text-sm font-medium text-primary-500">
             Get in Touch
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text">Let's Connect</span>
           </h2>
-          <p className="text-dark-400 max-w-2xl mx-auto">
-            Interested in collaboration or have an opportunity? I'd love to hear from you!
+          <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400">
+            Interested in collaboration or an opportunity? I would be delighted to hear from you.
           </p>
         </motion.div>
 
-        <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <div ref={ref} className="grid gap-12 lg:grid-cols-2 lg:gap-20">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -99,14 +137,14 @@ export function Contact() {
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
                     whileHover={{ x: 8, scale: 1.02 }}
-                    className="group flex items-center gap-4 p-5 rounded-2xl bg-dark-900/80 border border-dark-700/50 hover:border-primary-500/30 transition-all"
+                    className="group flex items-center gap-4 rounded-2xl border border-slate-200/70 bg-white/70 p-5 backdrop-blur-xl transition-all hover:border-primary-500/30 dark:border-dark-700/50 dark:bg-dark-900/80"
                   >
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-6 h-6 text-white" />
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${item.color} transition-transform group-hover:scale-110`}>
+                      <Icon className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex-grow">
-                      <div className="text-xs text-dark-500 mb-1">{item.label}</div>
-                      <div className="text-dark-200 font-medium break-all group-hover:text-white transition-colors">
+                      <div className="mb-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{item.label}</div>
+                      <div className="break-all font-medium text-slate-700 transition-colors group-hover:text-primary-600 dark:text-slate-200 dark:group-hover:text-white">
                         {item.value}
                       </div>
                     </div>
@@ -119,13 +157,13 @@ export function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.7 }}
-              className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-primary-500/10 to-accent-purple/10 border border-primary-500/30"
+              className="mt-8 rounded-2xl border border-primary-500/30 bg-gradient-to-br from-primary-500/10 to-accent-purple/10 p-6"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <MessageSquare className="w-5 h-5 text-primary-400" />
-                <span className="text-white font-semibold">Quick Response</span>
+              <div className="mb-3 flex items-center gap-3">
+                <MessageSquare className="h-5 w-5 text-primary-400" />
+                <span className="font-semibold text-slate-900 dark:text-white">Quick Response</span>
               </div>
-              <p className="text-dark-400 text-sm">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
                 I typically respond within 24 hours. Looking forward to connecting!
               </p>
             </motion.div>
@@ -136,31 +174,31 @@ export function Contact() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <div className="relative bg-dark-900/80 backdrop-blur-sm border border-dark-700/50 rounded-3xl p-8 lg:p-10">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/10 rounded-full blur-3xl" />
+            <div className="glass-panel relative rounded-[1.75rem] p-8 lg:p-10">
+              <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-primary-500/10 blur-3xl" />
 
-              <h3 className="text-xl font-bold text-white mb-6">Send a Message</h3>
+              <h3 className="mb-6 text-xl font-bold text-slate-900 dark:text-white">Send a Message</h3>
 
               <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
+                <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="block text-dark-400 text-sm mb-2">Name</label>
+                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Name</label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800/50 border border-dark-700 text-white placeholder-dark-500 focus:outline-none focus:border-primary-500 transition-colors"
+                      className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                       placeholder="Your name"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-dark-400 text-sm mb-2">Email</label>
+                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800/50 border border-dark-700 text-white placeholder-dark-500 focus:outline-none focus:border-primary-500 transition-colors"
+                      className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                       placeholder="your@email.com"
                       required
                     />
@@ -168,62 +206,72 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-dark-400 text-sm mb-2">Subject</label>
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Subject</label>
                   <input
                     type="text"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-dark-800/50 border border-dark-700 text-white placeholder-dark-500 focus:outline-none focus:border-primary-500 transition-colors"
+                    className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                     placeholder="What's this about?"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-dark-400 text-sm mb-2">Message</label>
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Message</label>
                   <textarea
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     rows={5}
-                    className="w-full px-4 py-3 rounded-xl bg-dark-800/50 border border-dark-700 text-white placeholder-dark-500 focus:outline-none focus:border-primary-500 transition-colors resize-none"
+                    className="w-full resize-none rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                     placeholder="Your message..."
                     required
                   />
                 </div>
 
+                {formStatus !== 'idle' && (
+                  <div className={`rounded-xl border px-4 py-3 text-sm ${formStatus === 'success' ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'border-rose-400/40 bg-rose-500/10 text-rose-700 dark:text-rose-300'}`}>
+                    {formStatus === 'success' ? 'Thanks! Your message has been sent successfully.' : errorMessage}
+                  </div>
+                )}
+
                 <motion.button
                   type="submit"
                   disabled={formStatus === 'sending'}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-primary-500 to-accent-purple text-white font-semibold shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 transition-all disabled:opacity-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary-500 to-accent-purple px-6 py-4 font-semibold text-white shadow-lg shadow-primary-500/25 transition-all hover:shadow-xl hover:shadow-primary-500/40 disabled:opacity-60"
                   whileHover={{ scale: formStatus === 'idle' ? 1.02 : 1 }}
                   whileTap={{ scale: formStatus === 'idle' ? 0.98 : 1 }}
                 >
                   {formStatus === 'idle' && (
                     <>
-                      <Send className="w-5 h-5" />
+                      <Send className="h-5 w-5" />
                       Send Message
                     </>
                   )}
                   {formStatus === 'sending' && (
                     <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                       Sending...
                     </>
                   )}
                   {formStatus === 'success' && (
                     <>
-                      <CheckCircle className="w-5 h-5" />
+                      <CheckCircle className="h-5 w-5" />
                       Message Sent!
                     </>
                   )}
                   {formStatus === 'error' && (
                     <>
-                      <AlertCircle className="w-5 h-5" />
+                      <AlertCircle className="h-5 w-5" />
                       Try Again
                     </>
                   )}
                 </motion.button>
               </form>
+
+              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                {emailJsInstructions}
+              </p>
             </div>
           </motion.div>
         </div>

@@ -21,7 +21,9 @@ export function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -31,62 +33,70 @@ export function Navbar() {
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-dark-900/80 dark:bg-dark-900/80 backdrop-blur-lg border-b border-dark-700/50'
+          ? 'border-b border-slate-200/70 bg-white/80 backdrop-blur-xl dark:border-dark-700/50 dark:bg-dark-900/80'
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
           <motion.a
             href="#home"
             className="flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
+            aria-label="Go to home section"
           >
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
-              <Code2 className="w-5 h-5 text-white" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple shadow-lg shadow-primary-500/20">
+              <Code2 className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold gradient-text hidden sm:block">
+            <span className="hidden text-xl font-bold text-slate-800 gradient-text sm:block dark:text-white">
               Charan
             </span>
           </motion.a>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden items-center gap-7 md:flex">
             {navLinks.map((link) => (
               <motion.a
                 key={link.name}
                 href={link.href}
-                className="text-dark-300 hover:text-primary-400 transition-colors font-medium"
+                className="font-medium text-slate-600 transition-colors hover:text-primary-500 dark:text-slate-300 dark:hover:text-primary-400"
                 whileHover={{ y: -2 }}
               >
                 {link.name}
               </motion.a>
             ))}
+            <motion.a
+              href="https://charankumarreddy.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-primary-500/30 bg-primary-500/10 px-3.5 py-2 text-sm font-semibold text-primary-600 transition-all hover:bg-primary-500/20 dark:text-primary-300"
+              whileHover={{ scale: 1.04 }}
+            >
+              Portfolio
+            </motion.a>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <motion.button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-dark-800/50 hover:bg-dark-700 transition-colors"
+              className="rounded-xl border border-slate-200/80 bg-white/80 p-2.5 text-slate-700 shadow-sm transition-all hover:bg-slate-100 dark:border-dark-700 dark:bg-dark-800/80 dark:text-slate-200 dark:hover:bg-dark-700"
               whileHover={{ scale: 1.1, rotate: 180 }}
               whileTap={{ scale: 0.9 }}
+              aria-label="Toggle theme"
             >
               {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-yellow-400" />
+                <Sun className="h-5 w-5 text-yellow-400" />
               ) : (
-                <Moon className="w-5 h-5 text-primary-500" />
+                <Moon className="h-5 w-5 text-primary-500" />
               )}
             </motion.button>
 
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-lg bg-dark-800/50 hover:bg-dark-700 transition-colors"
+              className="rounded-xl border border-slate-200/80 bg-white/80 p-2.5 text-slate-700 shadow-sm transition-all hover:bg-slate-100 dark:border-dark-700 dark:bg-dark-800/80 dark:text-slate-200 dark:hover:bg-dark-700 md:hidden"
               whileTap={{ scale: 0.9 }}
+              aria-label="Toggle navigation"
             >
-              {isOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </motion.button>
           </div>
         </div>
@@ -98,20 +108,29 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-dark-900/95 backdrop-blur-lg border-b border-dark-700"
+            className="border-b border-slate-200/70 bg-white/95 backdrop-blur-xl dark:border-dark-700 dark:bg-dark-900/95 md:hidden"
           >
-            <div className="px-4 py-4 space-y-2">
+            <div className="space-y-2 px-4 py-4">
               {navLinks.map((link) => (
                 <motion.a
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="block px-4 py-2 rounded-lg text-dark-300 hover:text-white hover:bg-dark-800 transition-all"
+                  className="block rounded-xl px-4 py-2.5 font-medium text-slate-700 transition-all hover:bg-slate-100 hover:text-primary-600 dark:text-slate-200 dark:hover:bg-dark-800 dark:hover:text-primary-400"
                   whileHover={{ x: 10 }}
                 >
                   {link.name}
                 </motion.a>
               ))}
+              <motion.a
+                href="https://charankumarreddy.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="block rounded-xl border border-primary-500/30 bg-primary-500/10 px-4 py-2.5 font-semibold text-primary-600 dark:text-primary-300"
+              >
+                Portfolio
+              </motion.a>
             </div>
           </motion.div>
         )}
