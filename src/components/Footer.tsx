@@ -158,7 +158,7 @@ export function Footer() {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1 }}
-        className="fixed bottom-8 right-8 p-3 rounded-xl bg-gradient-to-r from-primary-500 to-accent-purple text-white shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/50 transition-all z-40"
+        className="fixed bottom-5 right-4 z-40 rounded-xl bg-gradient-to-r from-primary-500 to-accent-purple p-3 text-white shadow-lg shadow-primary-500/30 transition-all hover:shadow-xl hover:shadow-primary-500/50 sm:right-6"
         whileHover={{ y: -4, scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
