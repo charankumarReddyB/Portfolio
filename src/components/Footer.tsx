@@ -28,10 +28,10 @@ export function Footer() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 mb-4"
+              className="mb-4 flex items-center gap-3"
             >
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
-                <Code2 className="w-5 h-5 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple">
+                <Code2 className="h-5 w-5 text-white" />
               </div>
               <span className="text-xl font-bold gradient-text">Charan Kumar Reddy</span>
             </motion.div>
@@ -39,7 +39,7 @@ export function Footer() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-dark-400 mb-6 max-w-md leading-relaxed"
+              className="mb-6 max-w-md leading-relaxed text-slate-600 dark:text-slate-400"
             >
               AI Developer, Full Stack Developer, and IoT Enthusiast passionate about building
               innovative solutions that solve real-world problems.
@@ -72,11 +72,11 @@ export function Footer() {
                   href={href}
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="p-3 rounded-xl bg-dark-800/50 border border-dark-700 hover:border-primary-500/50 hover:bg-dark-700 transition-all"
+                  className="rounded-xl border border-slate-200/70 bg-white/70 p-3 shadow-sm transition-all hover:border-primary-500/30 hover:bg-slate-100 dark:border-dark-700 dark:bg-dark-800/70 dark:hover:bg-dark-700"
                   whileHover={{ y: -4, scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Icon className="w-5 h-5 text-dark-400" />
+                  <Icon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
                 </motion.a>
               ))}
             </motion.div>
@@ -87,13 +87,13 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+            <h4 className="mb-4 font-semibold text-slate-900 dark:text-white">Quick Links</h4>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-dark-400 hover:text-primary-400 transition-colors"
+                    className="text-slate-600 transition-colors hover:text-primary-500 dark:text-slate-400"
                   >
                     {link.name}
                   </a>
@@ -107,37 +107,37 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <h4 className="text-white font-semibold mb-4">Contact Info</h4>
+            <h4 className="mb-4 font-semibold text-slate-900 dark:text-white">Contact Info</h4>
             <ul className="space-y-3">
               <li>
                 <a
                   href="mailto:charankumarreddybantrothula@gmail.com"
-                  className="text-dark-400 hover:text-primary-400 transition-colors flex items-start gap-2"
+                  className="flex items-start gap-2 text-slate-600 transition-colors hover:text-primary-500 dark:text-slate-400"
                 >
-                  <Mail className="w-4 h-4 mt-1 flex-shrink-0" />
+                  <Mail className="mt-1 h-4 w-4 flex-shrink-0" />
                   <span className="text-sm">charankumarreddybantrothula@gmail.com</span>
                 </a>
               </li>
               <li>
                 <a
                   href="tel:+919652233592"
-                  className="text-dark-400 hover:text-primary-400 transition-colors"
+                  className="text-slate-600 transition-colors hover:text-primary-500 dark:text-slate-400"
                 >
                   +91 9652233592
                 </a>
               </li>
-              <li className="text-dark-400 text-sm">Saveetha School of Engineering</li>
+              <li className="text-sm text-slate-600 dark:text-slate-400">Saveetha School of Engineering</li>
             </ul>
           </motion.div>
         </div>
 
-        <div className="border-t border-dark-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-slate-200/70 pt-8 dark:border-dark-800">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-dark-500 text-sm text-center md:text-left"
+              className="text-center text-sm text-slate-500 md:text-left dark:text-slate-400"
             >
               &copy; {new Date().getFullYear()} Bantrothula Charan Kumar Reddy. All rights reserved.
             </motion.p>
@@ -145,9 +145,9 @@ export function Footer() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="text-dark-500 text-sm flex items-center gap-1"
+              className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400"
             >
-              Built with <Heart className="w-4 h-4 text-red-500 inline animate-pulse" /> using React & Tailwind
+              Built with <Heart className="inline h-4 w-4 animate-pulse text-red-500" /> using React & Tailwind
             </motion.p>
           </div>
         </div>

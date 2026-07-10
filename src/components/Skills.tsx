@@ -1,29 +1,28 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Code, Brain, Server, Globe, Cloud, Cpu, Wrench, Users, Sparkles } from 'lucide-react';
+import { Brain, Cloud, Code2, Cpu, Server, Sparkles, Users, Wrench, Globe } from 'lucide-react';
 
 type SkillLevel = 'Advanced' | 'Intermediate' | 'Beginner';
 
 interface SkillItem {
   name: string;
   level: SkillLevel;
-  icon?: string;
 }
 
 interface SkillCategory {
   id: string;
   title: string;
-  icon: typeof Code;
-  skills: SkillItem[];
+  icon: typeof Code2;
   accent: string;
+  skills: SkillItem[];
 }
 
 const skillCategories: SkillCategory[] = [
   {
     id: 'programming',
     title: 'Programming Languages',
-    icon: Code,
+    icon: Code2,
     accent: 'from-primary-500 to-accent-purple',
     skills: [
       { name: 'Python', level: 'Advanced' },
@@ -47,7 +46,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     id: 'backend',
-    title: 'Backend Development',
+    title: 'Backend',
     icon: Server,
     accent: 'from-accent-cyan to-primary-500',
     skills: [
@@ -58,7 +57,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     id: 'frontend',
-    title: 'Frontend Development',
+    title: 'Frontend',
     icon: Globe,
     accent: 'from-primary-400 to-accent-cyan',
     skills: [
@@ -71,7 +70,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     id: 'cloud',
-    title: 'Cloud & DevOps',
+    title: 'Cloud',
     icon: Cloud,
     accent: 'from-accent-pink to-accent-purple',
     skills: [
@@ -83,7 +82,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     id: 'iot',
-    title: 'IoT & Embedded Systems',
+    title: 'IoT',
     icon: Cpu,
     accent: 'from-accent-cyan to-accent-purple',
     skills: [
@@ -117,9 +116,9 @@ const skillCategories: SkillCategory[] = [
 ];
 
 const levelStyles: Record<SkillLevel, string> = {
-  Advanced: 'border-violet-400/40 bg-violet-500/10 text-violet-600 dark:text-violet-300',
-  Intermediate: 'border-cyan-400/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300',
-  Beginner: 'border-emerald-400/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300',
+  Advanced: 'border-violet-400/40 bg-violet-500/10 text-violet-700 dark:text-violet-300',
+  Intermediate: 'border-cyan-400/40 bg-cyan-500/10 text-cyan-700 dark:text-cyan-300',
+  Beginner: 'border-emerald-400/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300',
 };
 
 export function Skills() {
@@ -146,7 +145,7 @@ export function Skills() {
             <span className="gradient-text">Technical Skills</span>
           </h2>
           <p className="mx-auto max-w-2xl text-slate-600 dark:text-slate-400">
-            A polished toolkit shaped by hands-on projects, research, and continuous learning.
+            A practical toolkit built through hands-on development, research, and problem-solving.
           </p>
         </motion.div>
 
@@ -157,16 +156,16 @@ export function Skills() {
             return (
               <motion.article
                 key={category.id}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 22 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.45, delay: categoryIndex * 0.08 }}
+                transition={{ duration: 0.4, delay: categoryIndex * 0.06 }}
                 whileHover={{ y: -8, scale: 1.01 }}
                 className="group relative"
               >
-                <div className={`absolute inset-0 rounded-[1.75rem] bg-gradient-to-br opacity-0 transition-opacity duration-300 blur-xl group-hover:opacity-100 ${category.accent}`} />
-                <div className="glass-panel relative h-full overflow-hidden rounded-[1.75rem] p-6 transition-all duration-300 group-hover:border-primary-500/40 group-hover:shadow-2xl">
-                  <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${category.accent} shadow-lg`}>
-                    <Icon className="h-7 w-7 text-white" />
+                <div className={`absolute inset-0 rounded-[1.5rem] bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100 ${category.accent}`} />
+                <div className="glass-panel relative h-full overflow-hidden rounded-[1.5rem] p-6 transition-all duration-300 group-hover:border-primary-500/40 group-hover:shadow-2xl">
+                  <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${category.accent} shadow-lg`}>
+                    <Icon className="h-6 w-6 text-white" />
                   </div>
 
                   <div className="mb-4 flex items-center justify-between gap-3">
@@ -174,18 +173,16 @@ export function Skills() {
                     <Sparkles className="h-4 w-4 text-primary-500" />
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
+                  <ul className="space-y-2.5">
                     {category.skills.map((skill) => (
-                      <motion.span
-                        key={skill.name}
-                        whileHover={{ y: -3, scale: 1.03 }}
-                        className={`rounded-full border px-3 py-1.5 text-sm font-medium ${levelStyles[skill.level]}`}
-                      >
-                        {skill.name}
-                        <span className="ml-2 text-[11px] uppercase tracking-[0.2em]">{skill.level}</span>
-                      </motion.span>
+                      <li key={skill.name} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200/70 bg-white/60 px-3 py-2.5 text-sm text-slate-700 shadow-sm dark:border-dark-700/70 dark:bg-dark-800/70 dark:text-slate-200">
+                        <span className="font-medium">{skill.name}</span>
+                        <span className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${levelStyles[skill.level]}`}>
+                          {skill.level}
+                        </span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               </motion.article>
             );

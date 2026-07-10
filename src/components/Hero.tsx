@@ -55,7 +55,7 @@ export function Hero() {
             </h1>
 
             <h2 className="mx-auto mb-6 max-w-3xl text-xl font-medium text-slate-600 sm:text-2xl md:text-3xl dark:text-slate-300">
-              CSE (Artificial Intelligence) Undergraduate
+              Computer Science (Artificial Intelligence) Undergraduate
             </h2>
 
             <div className="mb-8 flex flex-wrap justify-center gap-2.5">

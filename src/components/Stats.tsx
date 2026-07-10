@@ -1,35 +1,35 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { FolderKanban, Code, Award, Coffee } from 'lucide-react';
+import { FolderKanban, Code2, CloudCog, Cpu } from 'lucide-react';
 
 const stats = [
   {
     icon: FolderKanban,
     value: 4,
-    label: 'Projects Completed',
-    suffix: '+',
+    label: 'Projects',
+    suffix: '',
     color: 'from-primary-500 to-accent-purple',
   },
   {
-    icon: Code,
-    value: 10,
+    icon: Code2,
+    value: 15,
     label: 'Technologies',
     suffix: '+',
     color: 'from-accent-purple to-accent-pink',
   },
   {
-    icon: Award,
-    value: 95,
-    label: 'ML Model Accuracy',
-    suffix: '%',
+    icon: CloudCog,
+    value: 2,
+    label: 'Cloud Applications',
+    suffix: '',
     color: 'from-accent-cyan to-primary-500',
   },
   {
-    icon: Coffee,
-    value: 500,
-    label: 'Cups of Coffee',
-    suffix: '+',
+    icon: Cpu,
+    value: 1,
+    label: 'IoT System',
+    suffix: '',
     color: 'from-accent-pink to-accent-purple',
   },
 ];
@@ -39,42 +39,42 @@ export function Stats() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section ref={ref} className="py-16 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <section ref={ref} className="relative overflow-hidden py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.45, delay: index * 0.08 }}
                 className="group relative"
               >
-                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-2xl blur-xl"
+                <div className="absolute inset-0 rounded-[1.5rem] bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-20"
                   style={{
                     background: `linear-gradient(to bottom right, ${stat.color.split(' ')[0].replace('from-', '')}, ${stat.color.split(' ')[1].replace('to-', '')})`,
                   }}
                 />
 
-                <div className="relative p-6 rounded-2xl bg-dark-900/50 backdrop-blur-sm border border-dark-700/50 text-center group-hover:border-primary-500/30 transition-all">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-6 h-6 text-white" />
+                <div className="glass-panel relative overflow-hidden rounded-[1.5rem] p-6 text-center transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary-500/30">
+                  <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.color} transition-transform duration-300 group-hover:scale-110`}>
+                    <Icon className="h-6 w-6 text-white" />
                   </div>
 
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  <div className="mb-2 text-3xl font-semibold text-slate-900 dark:text-white md:text-4xl">
                     <motion.span
                       initial={{ opacity: 0 }}
                       animate={isInView ? { opacity: 1 } : {}}
-                      transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                      transition={{ duration: 0.4, delay: 0.35 + index * 0.08 }}
                     >
                       {stat.value}
                     </motion.span>
-                    <span className="text-primary-400">{stat.suffix}</span>
+                    <span className="ml-1 text-primary-500">{stat.suffix}</span>
                   </div>
 
-                  <p className="text-dark-400 text-sm">{stat.label}</p>
+                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{stat.label}</p>
                 </div>
               </motion.div>
             );

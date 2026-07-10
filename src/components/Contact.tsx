@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState, FormEvent } from 'react';
+import { useEffect, useRef, useState, FormEvent } from 'react';
+import emailjs from '@emailjs/browser';
 import { Mail, Phone, Send, Github, Linkedin, MessageSquare, CheckCircle, AlertCircle } from 'lucide-react';
 
-const emailJsInstructions = 'Replace these values with your EmailJS credentials to enable direct delivery.';
+const SERVICE_ID = 'service_dqk8rqd';
+const TEMPLATE_ID = '';
+const PUBLIC_KEY = '';
+const EMAILJS_CONFIGURED = Boolean(SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY);
 
 export function Contact() {
   const ref = useRef(null);
@@ -16,6 +20,13 @@ export function Contact() {
     message: '',
   });
   const [errorMessage, setErrorMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
+
+  useEffect(() => {
+    if (PUBLIC_KEY) {
+      emailjs.init(PUBLIC_KEY);
+    }
+  }, []);
 
   const validateForm = () => {
     if (!formData.name.trim()) return 'Please enter your name.';
@@ -25,6 +36,11 @@ export function Contact() {
     return '';
   };
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    window.setTimeout(() => setToastMessage(''), 4000);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const validationError = validateForm();
@@ -32,34 +48,44 @@ export function Contact() {
     if (validationError) {
       setErrorMessage(validationError);
       setFormStatus('error');
+      showToast(validationError);
       return;
     }
 
     setErrorMessage('');
     setFormStatus('sending');
 
+    if (!EMAILJS_CONFIGURED) {
+      setFormStatus('error');
+      const fallbackMessage = 'Unable to send your message. Please try again later or contact me directly.';
+      setErrorMessage(fallbackMessage);
+      showToast(fallbackMessage);
+      return;
+    }
+
     try {
-      const response = await fetch('https://formspree.io/f/xdkjnoev', {
-        method: 'POST',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
           subject: formData.subject,
           message: formData.message,
-        }),
-      });
+          to_name: 'Charan Kumar Reddy',
+        },
+        PUBLIC_KEY,
+      );
 
-      if (response.ok) {
-        setFormStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        window.setTimeout(() => setFormStatus('idle'), 4000);
-      } else {
-        throw new Error('Unable to send message right now.');
-      }
+      setFormStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      showToast('Thanks! Your message has been sent successfully.');
+      window.setTimeout(() => setFormStatus('idle'), 4000);
     } catch {
       setFormStatus('error');
-      setErrorMessage('Your message could not be sent. Please email me directly at charankumarreddybantrothula@gmail.com.');
+      const fallbackMessage = 'Unable to send your message. Please try again later or contact me directly.';
+      setErrorMessage(fallbackMessage);
+      showToast(fallbackMessage);
     }
   };
 
@@ -187,8 +213,7 @@ export function Contact() {
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
-                      placeholder="Your name"
+                      className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                       required
                     />
                   </div>
@@ -198,8 +223,7 @@ export function Contact() {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
-                      placeholder="your@email.com"
+                      className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                       required
                     />
                   </div>
@@ -211,8 +235,7 @@ export function Contact() {
                     type="text"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
-                    placeholder="What's this about?"
+                    className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                     required
                   />
                 </div>
@@ -223,8 +246,7 @@ export function Contact() {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     rows={5}
-                    className="w-full resize-none rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
-                    placeholder="Your message..."
+                    className="w-full resize-none rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800/70 dark:text-white"
                     required
                   />
                 </div>
@@ -269,13 +291,21 @@ export function Contact() {
                 </motion.button>
               </form>
 
-              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-                {emailJsInstructions}
-              </p>
             </div>
           </motion.div>
         </div>
       </div>
+
+      {toastMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 24 }}
+          className="fixed bottom-6 right-6 z-[70] max-w-sm rounded-2xl border border-slate-200/80 bg-white/90 px-4 py-3 text-sm font-medium text-slate-700 shadow-xl backdrop-blur-xl dark:border-dark-700 dark:bg-dark-900/90 dark:text-slate-200"
+        >
+          {toastMessage}
+        </motion.div>
+      )}
     </section>
   );
 }

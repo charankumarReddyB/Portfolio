@@ -48,37 +48,37 @@ export function About() {
             className="relative"
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-accent-purple/20 rounded-3xl blur-3xl" />
-              <div className="relative bg-dark-900/50 dark:bg-dark-900/50 backdrop-blur-sm border border-dark-700/50 rounded-3xl p-8 lg:p-10">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
-                    <GraduationCap className="w-8 h-8 text-white" />
+              <div className="absolute inset-0 rounded-[1.75rem] bg-gradient-to-r from-primary-500/20 to-accent-purple/20 blur-3xl" />
+              <div className="glass-panel relative rounded-[1.75rem] p-8 lg:p-10">
+                <div className="mb-6 flex items-center gap-4">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-accent-purple shadow-lg">
+                    <GraduationCap className="h-8 w-8 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">Bachelor of Engineering</h3>
-                    <p className="text-primary-400">Computer Science & Engineering (AI)</p>
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white">Bachelor of Engineering</h3>
+                    <p className="font-medium text-primary-600 dark:text-primary-300">Computer Science & Engineering (AI)</p>
                   </div>
                 </div>
 
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center gap-3 text-dark-300">
-                    <Target className="w-5 h-5 text-accent-cyan" />
+                <div className="mb-8 space-y-4">
+                  <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                    <Target className="h-5 w-5 text-accent-cyan" />
                     <span>Saveetha School of Engineering</span>
                   </div>
-                  <div className="flex items-center gap-3 text-dark-300">
-                    <Briefcase className="w-5 h-5 text-accent-purple" />
+                  <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                    <Briefcase className="h-5 w-5 text-accent-purple" />
                     <span>2024 - 2028</span>
                   </div>
                 </div>
 
-                <p className="text-dark-400 leading-relaxed mb-8">
+                <p className="mb-8 leading-8 text-slate-600 dark:text-slate-400">
                   I am currently pursuing Bachelor of Engineering in Computer Science and Engineering
                   (Artificial Intelligence) at Saveetha School of Engineering (2024-2028).
                 </p>
 
-                <div className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-primary-500/10 to-accent-purple/10 border border-primary-500/30">
-                  <Rocket className="w-5 h-5 text-primary-400" />
-                  <span className="text-primary-400 font-medium text-sm">
+                <div className="inline-flex items-center gap-2 rounded-2xl border border-primary-500/20 bg-primary-500/10 px-4 py-3">
+                  <Rocket className="h-5 w-5 text-primary-500" />
+                  <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
                     Actively seeking internship opportunities
                   </span>
                 </div>
@@ -91,25 +91,25 @@ export function About() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <h3 className="text-2xl font-bold text-white mb-6">My Expertise</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <h3 className="mb-6 text-2xl font-semibold text-slate-900 dark:text-white">My Expertise</h3>
+            <div className="grid gap-4 sm:grid-cols-2">
               {expertise.map(({ icon: Icon, title, color }, index) => (
                 <motion.div
                   key={title}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  transition={{ duration: 0.4, delay: 0.5 + index * 0.08 }}
+                  whileHover={{ scale: 1.03, y: -5 }}
                   className="group relative overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity rounded-2xl"
-                    style={{ background: `linear-gradient(to bottom right, var(--tw-gradient-stops))` }}
+                  <div className="absolute inset-0 rounded-[1.25rem] bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-10"
+                    style={{ background: `linear-gradient(to bottom right, ${color.split(' ')[0].replace('from-', '')}, ${color.split(' ')[1].replace('to-', '')})` }}
                   />
-                  <div className="relative p-5 rounded-2xl bg-dark-800/50 dark:bg-dark-800/50 border border-dark-700 group-hover:border-primary-500/50 transition-all">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-3`}>
-                      <Icon className="w-6 h-6 text-white" />
+                  <div className="relative rounded-[1.25rem] border border-slate-200/80 bg-white/70 p-5 shadow-sm transition-all duration-300 hover:border-primary-500/30 dark:border-dark-700/70 dark:bg-dark-800/70">
+                    <div className={`mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${color}`}>
+                      <Icon className="h-6 w-6 text-white" />
                     </div>
-                    <h4 className="text-dark-200 font-medium">{title}</h4>
+                    <h4 className="font-medium text-slate-700 dark:text-slate-200">{title}</h4>
                   </div>
                 </motion.div>
               ))}
