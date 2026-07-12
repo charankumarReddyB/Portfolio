@@ -73,7 +73,7 @@ const projects = [
     title: 'Disaster Response',
     subtitle: 'Intelligent Disaster Response Prioritization',
     description: 'Developed an intelligent disaster response prioritization system using C++ and OOP concepts. Processes multiple incidents, calculates severity, and allocates emergency resources efficiently.',
-    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=800&q=80',
     icon: AlertTriangle,
     color: 'from-orange-500 to-yellow-600',
     technologies: ['C++', 'OOP', 'STL', 'Priority Queue', 'VS Code'],
